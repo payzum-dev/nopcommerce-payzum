@@ -1,0 +1,60 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <Copyright>Copyright © Payzum</Copyright>
+    <Company>Payzum</Company>
+    <Authors>Payzum</Authors>
+    <Nullable>enable</Nullable>
+    <!-- The source omits `using System;` / `using System.Threading.Tasks;` throughout, as every
+         4.70 plugin does. Without this, Task, Type and IList do not resolve and the interface
+         implementation collapses into 40+ cascading errors. -->
+    <ImplicitUsings>enable</ImplicitUsings>
+    <OutputPath>..\..\Presentation\Nop.Web\Plugins\Payments.Payzum</OutputPath>
+    <OutDir>$(OutputPath)</OutDir>
+    <!-- Leave the host's shared libraries alone; this plugin brings no NuGet package of its own. -->
+    <CopyLocalLockFileAssemblies>false</CopyLocalLockFileAssemblies>
+  </PropertyGroup>
+
+  <!--
+    plugin.json and the views must be listed exactly once. The default item globs already pick
+    them up, so each one is removed from None first and then re-added as Content with a copy
+    rule — the same shape every first-party nopCommerce plugin uses. Declaring the Content
+    include without the matching None Remove is what produces NETSDK1022 ("duplicate Content
+    items ... plugin.json") and stops the plugin building at all.
+  -->
+  <ItemGroup>
+    <None Remove="plugin.json" />
+    <None Remove="Views\Configure.cshtml" />
+    <None Remove="Views\PaymentInfo.cshtml" />
+    <None Remove="Views\_ViewImports.cshtml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="plugin.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Views\Configure.cshtml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Views\PaymentInfo.cshtml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Views\_ViewImports.cshtml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <!-- Paths assume the standard nopCommerce solution layout; adjust if yours differs. -->
+    <ProjectReference Include="..\..\Presentation\Nop.Web\Nop.Web.csproj" />
+    <ClearPluginAssemblies Include="$(MSBuildProjectDirectory)\..\..\Build\ClearPluginAssemblies.proj" />
+  </ItemGroup>
+
+  <!-- This target executes after the "Build" target -->
+  <Target Name="NopTarget" AfterTargets="Build">
+    <!-- Delete unnecessary libraries from the plugins path -->
+    <MSBuild Projects="@(ClearPluginAssemblies)" Properties="PluginPath=$(MSBuildProjectDirectory)\$(OutDir)" Targets="NopClear" />
+  </Target>
+
+</Project>

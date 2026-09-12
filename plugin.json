@@ -1,0 +1,11 @@
+{
+  "Group": "Payment methods",
+  "FriendlyName": "Payzum — Crypto & Stablecoins",
+  "SystemName": "Payments.Payzum",
+  "Version": "1.1.0",
+  "SupportedVersions": [ "4.70" ],
+  "Author": "Payzum",
+  "DisplayOrder": 1,
+  "FileName": "Nop.Plugin.Payments.Payzum.dll",
+  "Description": "Accept crypto and stablecoins (USDC/USDT, multi-chain) via Payzum. Non-custodial — funds settle to your own wallet."
+}
