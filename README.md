@@ -39,8 +39,12 @@ custody. No chargebacks, no card networks, no PCI surface.
 
 ## Installation
 
-1. Copy `Nop.Plugin.Payments.Payzum/` into `src/Plugins/` of your nopCommerce
-   solution.
+1. Get the source: download
+   [`payzum-nopcommerce-src-1.1.0.zip`](https://github.com/payzum-dev/nopcommerce-payzum/releases/latest)
+   and unzip it into `src/Plugins/` (the archive contains the
+   `Nop.Plugin.Payments.Payzum/` folder), or clone this repository into
+   `src/Plugins/Nop.Plugin.Payments.Payzum/` — the repository *is* the project, so it needs that
+   folder name.
 2. Build the solution — the csproj outputs the plugin into
    `Presentation/Nop.Web/Plugins/Payments.Payzum`.
 3. **Admin → Configuration → Local plugins → Payzum → Install**, then
